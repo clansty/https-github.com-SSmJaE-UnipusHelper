@@ -21,7 +21,7 @@ function handleInput(element: Element, answerText: string) {
         .trigger("keydown")
         .trigger("input");
     if (/input/i.test(element.tagName)) {
-        //todo 这里为什么要这么做呢，是为了触发u校园自己的时间监听吗
+        //todo 这里为什么要这么做呢，是为了触发u校园自己的事件监听吗
         var setValue = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")!
             .set;
         (setValue as Function).call(element, answerText);

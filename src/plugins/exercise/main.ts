@@ -1,4 +1,4 @@
-import { Global, DEBUG_MODE } from "@src/global";
+import { Global } from "@src/global";
 import { addMessage, sleep } from "@src/utils/common";
 
 import { parseAnswers } from "./parser";
@@ -19,14 +19,22 @@ async function outputAnswers(answers: string[]) {
     }
 }
 
+import { Requests } from "@utils/requests";
+
 export async function handleQuestions(encryptedJson: FirstGrab) {
+    const IsExistUserReturnJson = await Requests.getOpenId();
 
-    let { questionType, answers } = parseAnswers(encryptedJson);
+    if (IsExistUserReturnJson.status) {
+        let { questionType, answers } = parseAnswers(encryptedJson);
 
-    console.log(answers);
-    outputAnswers(answers);
+        console.log(answers);
+        outputAnswers(answers);
 
-    if (Global.USER_SETTINGS.autoSolveNormal) {
-        solveQuestions(questionType, answers);
+        if (Global.USER_SETTINGS.autoSolveNormal) {
+            solveQuestions(questionType, answers);
+        }
+    } else {
+        Global.messages = [];
+        addMessage(`${IsExistUserReturnJson.message}`);
     }
 }

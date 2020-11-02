@@ -1,4 +1,4 @@
-export default [
+const SETTINGS: SectionSetting[] = [
     {
         title: "时长相关",
         display: true,
@@ -22,13 +22,13 @@ export default [
                 name: "随机延时",
                 type: "switch",
                 default: true,
-                description: "是否使用随机切换间隔，随机数小于switchInterval，大于等于其一半",
+                description: "是否使用随机切换间隔，随机数小于切换间隔，大于等于其一半",
             },
             {
                 id: "switchInterval",
                 name: "切换间隔",
                 default: 5,
-                description: "单位分钟，多久切换一次页面",
+                description: "单位分钟，允许小数，多久切换一次页面",
             },
             {
                 id: "switchLevel",
@@ -58,3 +58,5 @@ export default [
         ],
     },
 ];
+
+export default SETTINGS;

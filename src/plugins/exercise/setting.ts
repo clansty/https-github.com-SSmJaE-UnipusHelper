@@ -1,13 +1,4 @@
-// {
-//     //离线模式应该不是让用户手动选择的，而是连接服务器失败之后自动操作的，作为备用方案
-//     id: "offlineMode",
-//     name: "离线模式",
-//     type: "switch",
-//     default: false,
-//     description: "服务器连接不上时，使用官方接口",
-// },
-
-export default [
+const SETTINGS: SectionSetting[] = [
     {
         title: "普通练习",
         display: true,
@@ -34,3 +25,5 @@ export default [
         ],
     },
 ];
+
+export default SETTINGS;

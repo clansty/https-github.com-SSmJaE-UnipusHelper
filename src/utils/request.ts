@@ -4,7 +4,8 @@ interface Init {
     method?: METHOD;
     headers?: object;
     body?: string | object;
-} //todo 允许除了这三个以外的key
+    [propName: string]: any;
+}
 
 interface GM_xmlhttpResponse {
     /**
@@ -48,11 +49,11 @@ function generateFinalUrl(url: string) {
 
 declare let GM_xmlhttpRequest: any;
 
-//todo promise内部类型应该怎么定义
 export default function request(
     url: string,
     init: Init = { method: "GET", headers: {}, body: "" },
 ) {
+    //可以直接传入object，而不用每次手动stringify
     let body = typeof init.body === "object" ? JSON.stringify(init.body) : init.body;
 
     return new Promise<GM_xmlhttpResponse>((resolve, reject) => {
@@ -81,5 +82,3 @@ export default function request(
 //         return GM_fetch.request(url, init)
 //     };
 // })
-
-//todo onFail，可以自定义提示信息，并提供默认提示信息默认值

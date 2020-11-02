@@ -1,23 +1,23 @@
-<h1 align="center"> U校园网课助手</h1>
+<h1 align="center">U校园网课助手</h1>
 
 <p align="center">显示U校园题目答案；自动答题；支持班级测试、单元测试；刷时长；开放自定义参数</p>
 
 <p align="center">
-<!-- <a href="https://github.com/SSmJaE/WELearnHelper">Github</a> · 
-<a href="docs/DEVELOPMENT.md">参与开发</a> ·
+<a href="https://github.com/SSmJaE/UnipusHelper">Github</a> · 
+<a href="docs/DEVELOPMENT.md">参与开发</a> · 
+<a href="docs/CHANGELOG.md">更新日志</a>
+<!-- 
 <a href="https://github.com/SSmJaE/WELearnHelper/issues">问题反馈</a> ·
 <a href="https://github.com/SSmJaE/WELearnHelper/issues">功能请求</a> · -->
-<a href="https://github.com/SSmJaE/UnipusHelper">Github</a>
 </p>
 
 ## 友情链接
 - <a href="https://greasyfork.org/zh-CN/scripts/401447">超星学习通插件</a>
-- <a href="https://jq.qq.com/?_wv=1027&amp;k=Hh7gvvDz" rel="nofollow">大学生优惠购物,每天都能领优惠券还能获得返利!!!买前看一看,一年省下一部手机钱.</a>】【广告】
+- <a href="https://jq.qq.com/?_wv=1027&amp;k=Hh7gvvDz" rel="nofollow">大学生优惠购物,每天都能领优惠券还能获得返利!!!买前看一看,一年省下一部手机钱.</a>【广告】
 
 ## 脚本说明
-- UI和普通测试Fork于<a href="https://greasyfork.org/zh-CN/users/291023-askar882">@askar882</a>
-增加单元测试模块答案获取。（由自己研发完成）
-- 基于GPL-3.0，禁止商用。
+- 本项目基于GPL-3.0，完全开源，免费，仅供技术学习和交流，开发者团队并未授权任何组织、机构以及个人将其用于商业或者盈利性质的活动。也从未使用本项目进行任何盈利性活动。未来也不会将其用于开展营利性业务。个人或者组织，机构如果使用本项目产生的各类纠纷，法律问题，均由其本人承担。
+- 如果您开始使用本项目，即视为同意项目免责声明中的一切条款，条款更新不再另行通知。
 
 ## 使用
 - 安装最新版本的Chrome
@@ -57,27 +57,3 @@
 - <strong>主观题和阅读题</strong>，即视频，语音，作文<strong>不回答</strong>。
 - 插件显示答案功能会采集部分<strong>非隐私</strong>数据上传，仅用于提高答案匹配度。
 - 插件更新时间不定，请参照说明书。
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <h2>更新</h2>
-
-<ul>
-<li>V1.1.2 2020年10月27日 <strong>由于选项乱序，删除了选项，请用户对应选项选择。</strong></li>
-<li>V1.1.1 2020年10月27日 <strong>优化插件隐藏方式，增加用户交流群。</strong></li>
-<li>V1.1.0 2020年10月27日 <strong>1、新增答案模块中标题可点击，显示或隐藏。2、优化答案解析速度，以及答案解析异常处理。</strong></li>
-<li>V1.0.1 2020年10月26日 <strong>修复单元测试BUG</strong></li>
-<li>V1.0.0 2020年10月25日 <strong>正式发布</strong></li>
-</ul>
-
-    
-</div> -->

@@ -19,5 +19,5 @@ declare global {
     // // let unsafeWindow: any;
 
     const $: any; //todo types/jQuery
-    const angular: any; //todo types/jQuery
+    const angular: any; //todo types/angular
 }

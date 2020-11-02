@@ -21,7 +21,7 @@
         label="进入Q群"
         onclick="window.open('https://jq.qq.com/?_wv=1027&k=AyERrFvN','_blank')"
       ></my-button>
-      <my-button
+      <!-- <my-button
         v-if="Global.showExamQueryButton"
         id="container-check"
         label="查询所有"
@@ -43,7 +43,7 @@
         type="number"
         min="1"
         step="1"
-      />
+      /> -->
     </div>
     <div id="container-messages">
       <div
@@ -64,7 +64,7 @@
 /* global GM_setClipboard */
 // import Swal from "sweetalert2";
 
-import { Global } from "./global";
+import { Global } from "../global";
 // import { retrieveAllQuestions, Requests } from "@plugins/index";
 
 import Button from "./components/button";
@@ -92,18 +92,6 @@ export default {
       if (Global.USER_SETTINGS.autoCopy)
         GM_setClipboard(text.replace(/^.*、/, ""), "text");
     },
-    // async showComment() {
-    //   const { value: text } = await Swal.fire({
-    //     title: "留言",
-    //     input: "textarea",
-    //     inputPlaceholder:
-    //       "期待大家的反馈，如果有任何问题，都可以给我留言，我会定期查看。最好留下联系方式，方便后续交流。",
-    //     confirmButtonText: "发送",
-    //     width: 600,
-    //   });
-
-    //   if (text) Requests.sendComment(text);
-    // },
     showSetting() {
       let settingBase = document.querySelector("#container-setting-base");
       settingBase.style.display =

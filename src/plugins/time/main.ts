@@ -1,15 +1,16 @@
 import { Global } from "@src/global";
 
+let startUnit: HTMLElement;
 let startUnitIndex = (Global.USER_SETTINGS.rangeStart - 1) * 6;
 let endUnitIndex = Global.USER_SETTINGS.rangeEnd * 6 - 1;
-let startUnit: HTMLElement;
-function get_startUnit() {
+
+function getStartUnit() {
     for (let [index, unit] of document.querySelectorAll("#sidemenu li.group").entries()) {
         if (index == startUnitIndex) startUnit = unit as HTMLElement;
     }
 }
 
-function auto_next(selector: string, classFlag: string, switchLevel: number) {
+function autoNext(selector: string, classFlag: string, switchLevel: number) {
     let flag = false;
     for (let [index, unit] of document.querySelectorAll(selector).entries()) {
         if (flag) {
@@ -19,14 +20,19 @@ function auto_next(selector: string, classFlag: string, switchLevel: number) {
         }
         if (unit.classList.contains(classFlag)) {
             flag = true;
-            console.error(index, unit);
+
+            console.error("12321321", index, unit);
+
             if (Global.USER_SETTINGS.range)
                 if (switchLevel == 1) {
+                    //限定范围时，从指定开始范围刷
                     if (index < startUnitIndex) {
                         //跳转至开始单元
                         startUnit.click();
                         break;
                     }
+
+                    //限定范围时，是否循环刷
                     if (index >= endUnitIndex) {
                         if (Global.USER_SETTINGS.loop) {
                             startUnit.click();
@@ -38,7 +44,7 @@ function auto_next(selector: string, classFlag: string, switchLevel: number) {
     }
 }
 
-function generate_interval() {
+function generateInterval() {
     let rate = 1;
     if (Global.USER_SETTINGS.randomInterval) {
         rate = Math.random();
@@ -50,34 +56,42 @@ function generate_interval() {
 export function recur() {
     setTimeout(() => {
         switch (Global.USER_SETTINGS.switchLevel) {
-            case 3:
-                auto_next(".layoutHeaderStyle--circleTabsBox-jQdMo a", "selected", 3);
-            // fall through
-            case 2:
-                auto_next("#header .TabsBox li", "active", 2);
-            // fall through
-            case 1:
-                auto_next("#sidemenu li.group", "active", 1);
-            // fall through
+            //这里fall through是可以的，因为点击之后会切换页面，切换页面的话，相当于就break了
+            //需要fall through，是因为需要在上一级到达末尾时，能够自动降级，进行下一级的切换
+            //不用switch直接调用三次autoNext也是可以的
+            case 3: //tab，圆圈包裹的数字
+                autoNext(".layoutHeaderStyle--circleTabsBox-jQdMo a", "selected", 3);
+
+            case 2: //section，上方的标签页
+                autoNext("#header .TabsBox li", "active", 2);
+
+            case 1: //chapter，侧边栏的标签页
+                autoNext("#sidemenu li.group", "active", 1);
+
             default:
                 if (Global.USER_SETTINGS.loop) {
                     try {
                         (document.querySelector("#sidemenu li.group") as HTMLElement).click();
-                    } catch (error) {}
+                    } catch (error) {
+                        // console.error(error);
+                    }
                 }
         }
         recur();
-    }, generate_interval());
+        //每次切换都计算间隔，而不仅是第一次时计算
+    }, generateInterval());
 }
 
 export function handleAlert() {
     setTimeout(() => {
-        get_startUnit();
+        getStartUnit();
         try {
             document
                 .querySelector("div.dialog-header-pc--dialog-header-2qsXD")!
                 .parentElement!.querySelector("button")!
                 .click();
-        } catch (e) {}
+        } catch (e) {
+            // console.error(e);
+        }
     }, 5000);
 }
