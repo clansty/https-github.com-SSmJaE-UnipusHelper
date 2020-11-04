@@ -19,19 +19,16 @@ export function handleUnitTest() {
     if (url.includes("uexercise.unipus.cn/uexercise/api/v2/enter_unit_test")) {
         Requests.getUnitTestAnswers(url);
     }
+}
 
+export function smoothAlert() {
     let button = document.querySelector("#pageLayout div.main button") as HTMLElement;
-    if (button != null && button.innerText == "开始做题") {
+    if (button !== null && button.textContent === "开始做题") {
         swal("温馨提示", "请耐心等待【开始做题】 变为：【载入完成 点击进入】", "warning");
         let now_course = (document.querySelector("#header ul") as HTMLElement).innerText.split(
             "\n",
         );
         console.log("课程名：", now_course);
         button.innerText = "载入完成\n 点击进入";
-        // button.onclick = function() {
-        //     setTimeout(function() {
-        //         let iframeurl = document.querySelector("#iframe").src;
-        //     }, 2e3);
-        // };
     }
 }

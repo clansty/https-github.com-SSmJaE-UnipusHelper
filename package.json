@@ -1,6 +1,6 @@
 {
   "name": "unipus_helper",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Unipus网课助手",
   "private": true,
   "scripts": {

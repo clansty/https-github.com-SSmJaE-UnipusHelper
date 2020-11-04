@@ -76,9 +76,11 @@ export default function request(
     });
 }
 
-// ['delete', 'get', 'head', 'options', 'post', 'put', 'patch'].forEach(method => {
-//     GM_fetch2.prototype[method] = (url: string, init: Init) => {
-//         init = { ...init, method: <METHOD>method.toUpperCase() }
-//         return GM_fetch.request(url, init)
+// ["delete", "get", "head", "options", "post", "put", "patch"].forEach((method) => {
+//     request.prototype[method] = (url: string, init: Init) => {
+//         init = { ...init, method: method.toUpperCase() as METHOD };
+//         return request(url, init);
 //     };
-// })
+// });
+
+// request.get();

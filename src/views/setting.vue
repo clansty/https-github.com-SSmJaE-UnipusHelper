@@ -70,7 +70,7 @@ import Switch from "./components/switch";
 
 import { Global, VERSION } from "../global";
 import { controlCenter, returnDefaultValues } from "../settings";
-// import { Requests } from "@plugins/index";
+import { Requests } from "@utils/requests";
 
 export default {
   components: {
@@ -79,13 +79,11 @@ export default {
   data() {
     return {
       Global: Global,
-      version: VERSION,
       sections: controlCenter,
     };
   },
   created() {
-    // Requests.initial();
-    // Requests.updatePoints();
+    Requests.checkVersion(VERSION);
   },
   methods: {
     saveChange() {

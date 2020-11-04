@@ -35,13 +35,13 @@ export let BASE_URL: string | null;
 export let DEBUG_MODE: boolean;
 
 if (process.env.NODE_ENV === "development") {
-    BASE_URL = "http://localhost:8000/api/welearn";
+    BASE_URL = "http://localhost:8000/api/unipus";
     DEBUG_MODE = true;
 } else {
     // BASE_URL = "http://localhost:8000/api/welearn";
-    BASE_URL = "http://47.97.90.127/api/welearn";
+    BASE_URL = "http://47.97.90.127/api/unipus";
     DEBUG_MODE = false;
 }
 
-export const VERSION = "0.0.2";
+export const VERSION = "1.2.2";
 export const QUERY_INTERVAL = 3000; //单位ms

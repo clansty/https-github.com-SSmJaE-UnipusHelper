@@ -10,6 +10,10 @@ import { controlCenter, setDefaultValues, mergeSettings } from "./settings";
 //所以此处执行完毕，USER_SETTINGS还是可能为空，需要手动在插件的initial中timeout
 //或者手动控制执行顺序以保证USER_SETTINGS不为空
 (async () => {
+    //每次启动都会初始化USER_SETTINGS，所以需要先集成所有设置，因为是根据设置设定前者的默认值
+    const { pluginSettings } = await import("./plugins/index");
+    mergeSettings(controlCenter, pluginSettings);
+
     await new Promise((resolve) => {
         if (!DEBUG_MODE) {
             Global.USER_SETTINGS = JSON.parse(GM_getValue("USER_SETTINGS", "{}"));
@@ -18,8 +22,8 @@ import { controlCenter, setDefaultValues, mergeSettings } from "./settings";
         resolve();
     });
 
-    const output = await import("./plugins/index");
-    mergeSettings(controlCenter, output.pluginSettings);
+    //应用所有插件的初始化执行
+    import("@plugins/initial");
 })();
 
 //应用全局初始化
@@ -34,8 +38,8 @@ Vue.directive("ripple", Ripple);
 
 import { makeDraggable } from "./utils/common";
 
-import Panel from "./ui/panel.vue";
-import Setting from "./ui/setting.vue";
+import Panel from "./views/panel.vue";
+import Setting from "./views/setting.vue";
 
 // if (
 //     location.href.includes("centercourseware.sflep.com") || //练习答题页面

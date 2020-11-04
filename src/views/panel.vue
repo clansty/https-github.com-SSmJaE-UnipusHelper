@@ -6,44 +6,19 @@
       @click="showSetting"
     ></div>
     <div id="container-control">
-      <!-- <my-button
-        id="container-comment"
-        label="留言"
-        @click="showComment"
-      ></my-button> -->
-      <!-- <my-button label="test" @click="test"></my-button> -->
       <my-button label="折叠" @click="collapsePanel()"></my-button>
       <my-button
         label="使用说明"
         onclick="window.open('http://mz.3ds2.top','_blank')"
       ></my-button>
       <my-button
-        label="进入Q群"
+        label="交流群"
         onclick="window.open('https://jq.qq.com/?_wv=1027&k=AyERrFvN','_blank')"
       ></my-button>
-      <!-- <my-button
-        v-if="Global.showExamQueryButton"
-        id="container-check"
-        label="查询所有"
-        alt="间隔查询当前页面所有题目"
-        @click="query_all_questions"
-      >
-      </my-button>
       <my-button
-        v-if="Global.showExamQueryButton"
-        id="container-single-query"
-        label="单题查询"
-        alt="单题查询，右侧为题号"
-        @click="query_all_questions"
-      >
-      </my-button>
-      <input
-        v-if="Global.showExamQueryButton"
-        v-model="currentIndex"
-        type="number"
-        min="1"
-        step="1"
-      /> -->
+        label="折扣群"
+        onclick="window.open('https://jq.qq.com/?_wv=1027&k=tv8YouyG','_blank')"
+      ></my-button>
     </div>
     <div id="container-messages">
       <div
@@ -62,10 +37,8 @@
 
 <script >
 /* global GM_setClipboard */
-// import Swal from "sweetalert2";
 
 import { Global } from "../global";
-// import { retrieveAllQuestions, Requests } from "@plugins/index";
 
 import Button from "./components/button";
 
@@ -83,11 +56,6 @@ export default {
     },
   },
   methods: {
-    retrieveAllQuestions() {
-      console.log(111);
-      // retrieveAllQuestions();
-      console.log(222);
-    },
     autoCopy: function (text) {
       if (Global.USER_SETTINGS.autoCopy)
         GM_setClipboard(text.replace(/^.*、/, ""), "text");
@@ -96,17 +64,6 @@ export default {
       let settingBase = document.querySelector("#container-setting-base");
       settingBase.style.display =
         settingBase.style.display == "table" ? "none" : "table";
-    },
-    test() {
-      [
-        {
-          info: "We will do everything to ___________ peace.",
-          type: "normal",
-        },
-        { info: "preserve", type: "normal" },
-        { info: "新增收录", type: "normal" },
-        { info: "新增收录", type: "hr" },
-      ].forEach((e) => this.Global.messages.push(e));
     },
     collapsePanel() {
       this.Global.collapse = false;

@@ -1,3 +1,4 @@
 /node_modules/
 /dist/*
 /自用/
+/tests/*

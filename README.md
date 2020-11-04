@@ -1,6 +1,6 @@
 <h1 align="center">U校园网课助手</h1>
 
-<p align="center">显示U校园题目答案；自动答题；支持班级测试、单元测试；刷时长；开放自定义参数</p>
+<p align="center">显示U校园题目答案；自动答题；支持单元测试；刷时长；开放自定义参数</p>
 
 <p align="center">
 <a href="https://github.com/SSmJaE/UnipusHelper">Github</a> · 

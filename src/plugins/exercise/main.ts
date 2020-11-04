@@ -21,10 +21,35 @@ async function outputAnswers(answers: string[]) {
 
 import { Requests } from "@utils/requests";
 
-export async function handleQuestions(encryptedJson: FirstGrab) {
-    const IsExistUserReturnJson = await Requests.getOpenId();
+interface OpenIdStatus {
+    [openId: string]: boolean;
+}
 
-    if (IsExistUserReturnJson.status) {
+export async function handleQuestions(encryptedJson: FirstGrab) {
+    const openId = await Requests.getToken();
+
+    let continueFlag = false;
+    let openIdStatus: OpenIdStatus = JSON.parse(GM_getValue("openIdStatus", "{}"));
+
+    if (openIdStatus[openId]) {
+        //如果已经认证通过
+        continueFlag = true;
+    } else {
+        const isExistUseReturnJson = await Requests.isExistUser();
+        if (isExistUseReturnJson.status) {
+            //认证成功
+            continueFlag = true;
+
+            openIdStatus[openId] = true;
+            GM_setValue("openIdStatus", JSON.stringify(openIdStatus));
+        } else {
+            //认证失败
+            Global.messages = [];
+            addMessage(`${isExistUseReturnJson.message}`);
+        }
+    }
+
+    if (continueFlag) {
         let { questionType, answers } = parseAnswers(encryptedJson);
 
         console.log(answers);
@@ -33,8 +58,5 @@ export async function handleQuestions(encryptedJson: FirstGrab) {
         if (Global.USER_SETTINGS.autoSolveNormal) {
             solveQuestions(questionType, answers);
         }
-    } else {
-        Global.messages = [];
-        addMessage(`${IsExistUserReturnJson.message}`);
     }
 }
