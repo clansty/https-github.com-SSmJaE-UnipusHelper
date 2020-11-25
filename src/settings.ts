@@ -76,18 +76,23 @@ export function mergeSettings(controlCenter: SectionSetting[], pluginSettings: S
 //*-----------------------------------------------------------------------------------
 
 import { Global } from "./global";
-
+import Vue from "vue";
 /**
  * 通过集成了所有插件设置的设置中心，设置USER_SETTINGS的默认值
  */
 export function setDefaultValues(controlCenter: SectionSetting[]) {
     //todo 是都需要检查gm取出的值的合法性？
+    // const buffer = {} as any;
     for (const section of controlCenter) {
         for (const generic of section.settings) {
-            if (Global.USER_SETTINGS[generic.id] == undefined)
+            if (Global.USER_SETTINGS[generic.id] == undefined) {
                 Global.USER_SETTINGS[generic.id] = generic.default;
+                // buffer[generic.id] = generic.default;
+                // Vue.set(Global.USER_SETTINGS, generic.id, generic.default);
+            }
         }
     }
+    // Global.USER_SETTINGS = Object.assign({}, Global.USER_SETTINGS, { ...buffer });
 }
 
 export function returnDefaultValues() {

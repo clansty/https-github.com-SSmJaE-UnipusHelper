@@ -20,4 +20,6 @@ declare global {
 
     const $: any; //todo types/jQuery
     const angular: any; //todo types/angular
+    /**是否为扩展模式 */
+    const CRX: boolean;
 }

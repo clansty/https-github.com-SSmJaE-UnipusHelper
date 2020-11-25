@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         U校园网课助手【全网唯一免费/最全u校园题库】
-// @namespace    http://tampermonkey.net/
-// @description  显示U校园题目答案；自动答题；支持单元测试；刷时长；开放自定义参数
-// @version      1.2.2
-// @author       rui & dan
+// @namespace    https://www.github.com/SSmJaE/
+// @description  显示U校园题目答案；自动答题；支持单元测试；刷时长；开放自定义设置
+// @version      1.3.0
+// @author       rui & dan & SSmJaE
 // @license      GPL-3.0
 // @compatible   Chrome
 // @run-at       document-end
@@ -29,3 +29,4 @@
 // @require      https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js
 // ==/UserScript==
 
+const CRX = false;

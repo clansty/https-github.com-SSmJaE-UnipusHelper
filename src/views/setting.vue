@@ -4,28 +4,18 @@
       <hr v-if="index !== 0" />
       <div class="title" @click="section.display = !section.display">
         {{ section.title }}
-        <svg
-          class="arrow-down"
-          :class="section.display ? 'opened' : ''"
-          width="24"
-          height="24"
-        >
-          <path
-            d="M12 13L8.285 9.218a.758.758 0 0 0-1.064 0 .738.738 0 0 0 0 1.052l4.249 4.512a.758.758 0 0 0 1.064 0l4.246-4.512a.738.738 0 0 0 0-1.052.757.757 0 0 0-1.063 0L12.002 13z"
-            fill-rule="evenodd"
-          />
-        </svg>
+        <Arrow :opened="section.display"></Arrow>
       </div>
-      <transition name="toggle-slide">
+      <ToggleSlide>
         <div v-show="section.display" class="body">
           <div
             v-for="setting in section.settings"
             :key="setting.id"
             class="record"
           >
-            <label class="record-left" :for="setting.id">{{
-              setting.name
-            }}</label>
+            <label class="record-left" :for="setting.id">
+              {{ setting.name }}
+            </label>
             <div class="record-middle">
               <template v-if="setting.type === 'readonly'">
                 <div class="readonly">
@@ -33,10 +23,10 @@
                 </div>
               </template>
               <template v-else-if="setting.type === 'switch'">
-                <my-switch
+                <MySwitch
                   :id="setting.id"
                   v-model="Global.USER_SETTINGS[setting.id]"
-                ></my-switch>
+                ></MySwitch>
               </template>
               <template v-else>
                 <input
@@ -54,47 +44,56 @@
             </div>
           </div>
         </div>
-      </transition>
+      </ToggleSlide>
     </div>
     <div class="container-setting-footer">
-      <button @click="saveChange">保存 & 刷新</button>
-      <button @click="setDefault">还原默认值</button>
+      <Button label="保存 & 刷新" @click="saveChange"></Button>
+      <Button label="还原默认值" @click="setDefault"></Button>
     </div>
   </div>
 </template>
 
-<script>
-/* global GM_setValue */
-
-import Switch from "./components/switch";
+<script lang="ts">
+import "reflect-metadata";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 import { Global, VERSION } from "../global";
 import { controlCenter, returnDefaultValues } from "../settings";
 import { Requests } from "@utils/requests";
+import { setValue } from "@utils/common";
 
-export default {
+import Arrow from "./components/Arrow.vue";
+import Button from "./components/Button.vue";
+import MySwitch from "./components/Switch.vue";
+
+import ToggleSlide from "./animations/ToggleSlide.vue";
+
+@Component({
   components: {
-    "my-switch": Switch,
+    MySwitch,
+    Arrow,
+    Button,
+    ToggleSlide,
   },
-  data() {
-    return {
-      Global: Global,
-      sections: controlCenter,
-    };
-  },
+})
+export default class Setting extends Vue {
+  Global = Global;
+  USER_SETTINGS = Global.USER_SETTINGS;
+  sections = controlCenter;
+
   created() {
     Requests.checkVersion(VERSION);
-  },
-  methods: {
-    saveChange() {
-      GM_setValue("USER_SETTINGS", JSON.stringify(Global.USER_SETTINGS));
-      location.reload(true);
-    },
-    setDefault() {
-      returnDefaultValues();
-    },
-  },
-};
+  }
+
+  async saveChange() {
+    await setValue("USER_SETTINGS", Global.USER_SETTINGS);
+    location.reload(true);
+  }
+
+  setDefault() {
+    returnDefaultValues();
+  }
+}
 </script>
 
 <style scoped>
@@ -151,35 +150,6 @@ div.body {
   overflow: hidden;
 }
 
-/* 旋转箭头 */
-svg.arrow-down {
-  position: relative;
-  top: 5px;
-  left: 0px;
-  transition-duration: 0.6s;
-}
-
-svg.arrow-down.opened {
-  transform: rotate(180deg);
-}
-/* -------------------- */
-
-/* 抽屉 */
-.toggle-slide-leave-active,
-.toggle-slide-enter-active {
-  transition: all 0.6s;
-}
-
-.toggle-slide-enter,
-.toggle-slide-leave-to {
-  max-height: 0;
-  opacity: 0;
-}
-
-.toggle-slide-enter-to,
-.toggle-slide-leave {
-  max-height: 300px;
-}
 /* -------------------- */
 
 div.record {
@@ -239,14 +209,7 @@ hr {
   /* justify-content: flex-end; */
   margin: 5px 0;
 }
-.container-setting-footer button {
+.container-setting-footer .my-button {
   margin: 0 5px;
 }
-
-/* #container-setting-save {
-  position: relative;
-  margin: 5px;
-  left: 50%;
-  transform: translate(-55%, 5%);
-} */
 </style>

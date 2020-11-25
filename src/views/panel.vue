@@ -3,22 +3,22 @@
     <div
       id="container-setting-button"
       class="iconfont icon-setting"
-      @click="showSetting"
+      @click="showSetting()"
     ></div>
     <div id="container-control">
-      <my-button label="折叠" @click="collapsePanel()"></my-button>
-      <my-button
+      <Button label="折叠" @click="collapsePanel()"></Button>
+      <Button
         label="使用说明"
         onclick="window.open('http://mz.3ds2.top','_blank')"
-      ></my-button>
-      <my-button
+      ></Button>
+      <Button
         label="交流群"
         onclick="window.open('https://jq.qq.com/?_wv=1027&k=AyERrFvN','_blank')"
-      ></my-button>
-      <my-button
+      ></Button>
+      <Button
         label="折扣群"
         onclick="window.open('https://jq.qq.com/?_wv=1027&k=tv8YouyG','_blank')"
-      ></my-button>
+      ></Button>
     </div>
     <div id="container-messages">
       <div
@@ -35,41 +35,39 @@
   </div>
 </template>
 
-<script >
-/* global GM_setClipboard */
+<script lang="ts">
+import "reflect-metadata";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 import { Global } from "../global";
+import { copyToClipboard } from "@utils/common";
 
-import Button from "./components/button";
+import Button from "./components/Button.vue";
 
-export default {
-  components: { "my-button": Button },
-  data: function () {
-    return {
-      Global: Global,
-      currentIndex: 1,
-    };
+@Component({
+  components: {
+    Button,
   },
-  computed: {
-    points() {
-      return this.Global.points;
-    },
-  },
-  methods: {
-    autoCopy: function (text) {
-      if (Global.USER_SETTINGS.autoCopy)
-        GM_setClipboard(text.replace(/^.*、/, ""), "text");
-    },
-    showSetting() {
-      let settingBase = document.querySelector("#container-setting-base");
-      settingBase.style.display =
-        settingBase.style.display == "table" ? "none" : "table";
-    },
-    collapsePanel() {
-      this.Global.collapse = false;
-    },
-  },
-};
+})
+export default class Panel extends Vue {
+  Global = Global;
+
+  autoCopy(text: string) {
+    if (Global.USER_SETTINGS.autoCopy) copyToClipboard(text);
+  }
+
+  showSetting() {
+    let settingBase = document.querySelector(
+      "#container-setting-base"
+    ) as HTMLElement;
+    settingBase.style.display =
+      settingBase.style.display == "table" ? "none" : "table";
+  }
+
+  collapsePanel() {
+    this.Global.collapse = false;
+  }
+}
 </script>
 
 <style>

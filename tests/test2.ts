@@ -15,8 +15,6 @@
 //     return descriptor;
 // }
 
-
-
 // // import { sleep, requestErrorHandler } from "./common";
 
 // function enumerable(value: boolean) {
@@ -37,3 +35,29 @@
 // }
 
 // test2222.test();
+
+// import * as queryString from "query-string";
+const queryString = require("query-string");
+
+const url = queryString.stringifyUrl({
+    url: "/test/123/?a=3&c=3",
+    query: {
+        a: "1",
+        b: "2",
+    },
+});
+console.log(url);
+url;
+const a /*? $.length */ = {
+    a: "1",
+    b: "2",
+};
+
+a;
+
+const time = new Date().toISOString();
+time;
+
+let b = 1;
+b += 2; //test
+b = 4; //test

@@ -1,5 +1,5 @@
 import { Global } from "@src/global";
-import { addMessage, sleep } from "@src/utils/common";
+import { addMessage, sleep, setValue, getValue } from "@utils/common";
 
 import { parseAnswers } from "./parser";
 import { solveQuestions } from "./solver";
@@ -29,7 +29,7 @@ export async function handleQuestions(encryptedJson: FirstGrab) {
     const openId = await Requests.getToken();
 
     let continueFlag = false;
-    let openIdStatus: OpenIdStatus = JSON.parse(GM_getValue("openIdStatus", "{}"));
+    let openIdStatus: OpenIdStatus = await getValue("openIdStatus", {});
 
     if (openIdStatus[openId]) {
         //如果已经认证通过
@@ -41,11 +41,11 @@ export async function handleQuestions(encryptedJson: FirstGrab) {
             continueFlag = true;
 
             openIdStatus[openId] = true;
-            GM_setValue("openIdStatus", JSON.stringify(openIdStatus));
+            setValue("openIdStatus", JSON.stringify(openIdStatus));
         } else {
             //认证失败
             Global.messages = [];
-            addMessage(`${isExistUseReturnJson.message}`);
+            addMessage(`${isExistUseReturnJson.message}`, "info");
         }
     }
 

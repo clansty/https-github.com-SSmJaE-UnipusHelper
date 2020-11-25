@@ -1,25 +1,57 @@
+import { Global } from "../global";
+import Communication from "./bridge";
+
+export const injectToContent = CRX
+    ? new Communication("client", "inject", "content")
+    : ({} as Communication);
+
 export function sleep(ms: number) {
     return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
-type InfoType = "normal" | "error" | "success" | "info" | "hr";
-
-import { Global } from "../global";
-
-export async function addMessage(info: string | number | null, type: InfoType = "normal") {
-    //除了添加分隔线以外的情况，消息都不应为空
-    if (type !== "hr") {
-        if (info === null || info === "") return;
-    }
-    Global.messages.push({ info: String(info), type: type });
-
-    if (Global.USER_SETTINGS.autoSlide) {
-        await sleep(10); //等待message渲染完成，不然不会拉到最底
+/**添加多条消息 */
+export async function addMessage(message: Array<string | number> | Array<Message>): Promise<void>;
+/**添加一条消息 */
+export async function addMessage(message: string | number, type?: InfoType): Promise<void>;
+export async function addMessage(
+    message: Array<string | number> | Array<Message> | string | number,
+    type: InfoType = "normal",
+) {
+    function scrollDown() {
         (<HTMLElement>document.querySelector("#container-messages")).scrollBy(0, 1000);
+    }
+
+    async function add(finalInfo: string, finalType: InfoType, single = true) {
+        if (finalType !== "hr") {
+            //除了添加分隔线以外的情况，消息都不应为空
+            if (finalInfo === "") return;
+        }
+        Global.messages.push({ info: finalInfo, type: finalType });
+
+        if (Global.USER_SETTINGS.autoSlide && single === true) {
+            await sleep(10); //等待message渲染完成，不然不会拉到最底
+            scrollDown();
+        }
+    }
+
+    if (Array.isArray(message)) {
+        for (const line of message) {
+            if (typeof line === "object") {
+                //Message[]
+                await add(line.info, line.type, false);
+            } else {
+                //未提供消息类型，(string|number)[]
+                await add(String(line), "normal", false);
+            }
+        }
+        scrollDown();
+    } else {
+        //可能提供了type，所以用默认值参数
+        await add(String(message), type);
     }
 }
 
-/**实现拖动*/
+/**实现拖动，带边界检测*/
 export function makeDraggable(handle: HTMLElement, container: HTMLElement) {
     function getProperty(ele: HTMLElement, prop: any) {
         return parseInt(window.getComputedStyle(ele)[prop]);
@@ -95,7 +127,12 @@ export function makeDraggable(handle: HTMLElement, container: HTMLElement) {
     );
 }
 
-/** 通过装饰器，实现请求失败时，输出定制化的提示信息 */
+/** 通过装饰器，实现请求失败时，输出定制化的提示信息
+ *
+ * 如果不对request进行装饰器包裹，异常直接输出至console
+ *
+ * 如果使用了装饰器，但是未提供message，输出默认值
+ */
 export function requestErrorHandler(message: string = "请求异常，稍后再试") {
     return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const originalMethod = descriptor.value;
@@ -111,4 +148,64 @@ export function requestErrorHandler(message: string = "请求异常，稍后再�
 
         return descriptor;
     };
+}
+
+/**调用GM_setValue或者chrome.storage
+ *
+ * 如果调用的是GM_setValue，会对value进行JSON.stringify */
+export async function setValue(key: string, value: any) {
+    typeof GM_setValue === "function" || function GM_setValue() {};
+
+    if (CRX) {
+        await injectToContent.request({
+            type: "setValue",
+            key: key,
+            value: value,
+        });
+    } else {
+        GM_setValue(key, JSON.stringify(value));
+    }
+}
+
+/**调用GM_getValue或者chrome.storage
+ *
+ * 如果调用的是GM_getValue，返回JSON.parse后的结果 */
+export async function getValue(key: string, defaultValue?: any) {
+    typeof GM_getValue === "function" || function GM_getValue() {};
+
+    let returnValue: any;
+    if (CRX) {
+        returnValue = await injectToContent.request({
+            type: "getValue",
+            key: key,
+            defaultValue: defaultValue,
+        });
+
+        console.error(returnValue);
+    } else {
+        returnValue = JSON.parse(GM_getValue(key, defaultValue));
+    }
+    return returnValue;
+}
+
+/**针对带数字索引的答案 */
+export async function copyToClipboard(text: string) {
+    await navigator.clipboard.writeText(text.replace(/^.*、/, ""));
+}
+
+/**格式化单元测试接口返回的html格式答案 */
+export function clearHtmlTagAndSplit(text: string) {
+    return text.split(/<(?:br|hr) *\/?>/).map((answer) => {
+        let buffer = answer.replace(/<.*?>/g, "").replace(/&nbsp;/g, "");
+
+        const temp = buffer.split(/:/);
+
+        if (temp.length === 2) {
+            const [index, answerText] = temp;
+            const realIndex = index.padStart(2, "0");
+            buffer = `${realIndex}、${answerText}`;
+        }
+
+        return buffer;
+    });
 }

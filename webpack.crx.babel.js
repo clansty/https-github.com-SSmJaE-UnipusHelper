@@ -2,17 +2,22 @@ import path from "path";
 
 import webpack from "webpack";
 import VueLoaderPlugin from "vue-loader/lib/plugin";
-import HtmlWebpackPlugin from "html-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
-
-import PACKAGE_JSON from "./package.json";
+import CopyPlugin from "copy-webpack-plugin";
 
 export default {
-    entry: "./src/main.ts",
+    mode: "production",
+    // mode: "development",
+    // devtool: "inline-source-map",
+    entry: {
+        main: "./src/main.ts",
+        inject: "./src/inject.ts",
+        content: "./src/content.ts",
+        background: "./src/background.ts",
+    },
     output: {
-        //__dirname即当前文件所在目录的路径，此处是根目录
         path: path.resolve(__dirname, "./dist"),
-        filename: `UnipusHelper${PACKAGE_JSON.version}.js`,
+        filename: `[name].js`,
     },
     module: {
         rules: [
@@ -54,14 +59,7 @@ export default {
             },
             {
                 test: /\.(png|jpg|gif|eot|svg|ttf|woff|woff2)$/i,
-                use: [
-                    {
-                        loader: "url-loader",
-                        // options: {
-                        //     limit: 8192,
-                        // },
-                    },
-                ],
+                use: [{ loader: "url-loader" }],
             },
             {
                 test: /\.vue$/,
@@ -74,17 +72,18 @@ export default {
         // 使用webpack打包vue文件，必须需要这个插件
         new VueLoaderPlugin(),
         new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
-        new HtmlWebpackPlugin({
-            title: "Output Management",
-        }),
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1,
         }),
-        // new webpack.BannerPlugin({
-        //     banner: fs.readFileSync("./docs/headers.js", "utf8"),
-        //     raw: true,
-        //     entryOnly: true,
-        // }),
+        new CopyPlugin({
+            patterns: [
+                { from: "manifest.json", to: "" },
+                { from: "assets/icon.png", to: "" },
+            ],
+        }),
+        new webpack.DefinePlugin({
+            CRX: true,
+        }),
     ],
     resolve: {
         //import的时候，可以不用写扩展名

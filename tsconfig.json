@@ -3,8 +3,10 @@
         "target": "ESNext",
         "module": "ESNext",
         "moduleResolution": "node",
+        "resolveJsonModule": true,
         "strict": true,
         "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "allowJs": true,
         "sourceMap": true,
         "outDir": "./dist/",
@@ -28,4 +30,7 @@
             "./src/types"
         ],
     },
+    "include": [
+        "src/**/*"
+    ],
 }

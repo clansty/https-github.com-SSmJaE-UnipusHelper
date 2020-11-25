@@ -4,5 +4,6 @@ declare module "*.vue" {
 }
 
 declare module "vue-ripple-directive" {
-    export default any;
+    const temp: any;
+    export default temp;
 }

@@ -1,4 +1,5 @@
-// import * as CryptoJS from "crypto-js";
+import * as CryptoJS from "crypto-js";
+// import { AES, enc, mode, pad } from "crypto-js";
 function decrypt(json: FirstGrab) {
     if (json) {
         let r = json.content.slice(7),
@@ -11,6 +12,16 @@ function decrypt(json: FirstGrab) {
                     padding: CryptoJS.pad.ZeroPadding,
                 }).toString(CryptoJS.enc.Utf8),
             );
+        // let r = json.content.slice(7),
+        //     o = enc.Utf8.parse("1a2b3c4d" + json.k),
+        //     i = enc.Hex.parse(r),
+        //     a = enc.Base64.stringify(i),
+        //     contentJson = JSON.parse(
+        //         AES.decrypt(a, o, {
+        //             mode: mode.ECB,
+        //             padding: pad.ZeroPadding,
+        //         }).toString(enc.Utf8),
+        //     );
         json = contentJson;
         console.log(json);
     }
@@ -156,7 +167,7 @@ export function parseAnswers(json: FirstGrab) {
                         answers.push(question.answer);
                     }
                     break;
-                    
+
                 case 6: //下拉，未遇到过
                     questionType = "sequence";
                     for (const question of questionBase.questions) {

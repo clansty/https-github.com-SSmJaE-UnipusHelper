@@ -159,3 +159,13 @@ interface QuestionsSequence {
 type DecryptedJson = {
     [key in ExerciseQuestionType]: QuestionsScoopQuestions;
 };
+
+//适配query-string包的query类型
+type Stringifiable = string | boolean | number | null | undefined;
+type StringifiableRecord = Record<string, Stringifiable | readonly Stringifiable[]>;
+
+type InfoType = "normal" | "error" | "success" | "info" | "hr";
+interface Message {
+    info: string;
+    type: InfoType;
+}

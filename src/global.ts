@@ -1,8 +1,3 @@
-interface Message {
-    info: string;
-    type: string;
-}
-
 // export class Global {
 //     static messages: Message[] = [];
 //     static USER_SETTINGS: Setting = {};
@@ -36,12 +31,14 @@ export let DEBUG_MODE: boolean;
 
 if (process.env.NODE_ENV === "development") {
     BASE_URL = "http://localhost:8000/api/unipus";
-    DEBUG_MODE = true;
+    // DEBUG_MODE = true;
+    DEBUG_MODE = false;
 } else {
-    // BASE_URL = "http://localhost:8000/api/welearn";
+    // BASE_URL = "http://localhost:8000/api/unipus";
     BASE_URL = "http://47.97.90.127/api/unipus";
     DEBUG_MODE = false;
 }
 
-export const VERSION = "1.2.2";
+import * as PACKAGE_JSON from "../package.json";
+export const VERSION = PACKAGE_JSON.version;
 export const QUERY_INTERVAL = 3000; //单位ms
