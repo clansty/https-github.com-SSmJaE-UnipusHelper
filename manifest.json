@@ -38,9 +38,11 @@
         }
     ],
     "permissions": [
-        "tabs",
         "storage",
-        "<all_urls>"
+        "*://mz.3ds2.top/*",
+        "*://47.97.90.127/*",
+        "*://u.unipus.cn/*",
+        "*://ucamapi.unipus.cn/*"
     ],
     "web_accessible_resources": [
         "main.js"

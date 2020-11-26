@@ -14,17 +14,21 @@
 </p>
 
 ## 友情链接
-- <a href="https://greasyfork.org/zh-CN/scripts/401447">超星学习通插件</a>
 - <a href="https://jq.qq.com/?_wv=1027&amp;k=Hh7gvvDz" rel="nofollow">大学生优惠购物,每天都能领优惠券还能获得返利!!!买前看一看,一年省下一部手机钱.</a>【广告】
 
 ## 声明
 - 本项目基于GPL-3.0，完全开源，免费，仅供技术学习和交流，开发者团队并未授权任何组织、机构以及个人将其用于商业或者盈利性质的活动。也从未使用本项目进行任何盈利性活动。未来也不会将其用于开展营利性业务。个人或者组织，机构如果使用本项目产生的各类纠纷，法律问题，均由其本人承担。
 - 如果您开始使用本项目，即视为同意项目免责声明中的一切条款，条款更新不再另行通知。
 
-## 使用
+## 安装
 - 安装最新版本的Chrome
-- 安装最新版本的Tamper Monkey
-- 安装最新版本的本脚本
+- 油猴
+  - 安装最新版本的Tamper Monkey
+  - 安装最新版本的本脚本(可以在Github右侧Release下载UnipusHelper[版本号].js文件，在油猴中新建脚本，并复制粘贴保存)
+- Chrome扩展
+  - 在Release中下载dist.zip压缩包，添加至chrome即可
+
+## 使用
 - 点击***左上角齿轮***进行功能设定
 - 练习
   - 进入练习页面，如果是支持的课程，会自动显示答案
@@ -56,9 +60,9 @@
   - 可以按Esc键强制退出跟随状态
 
 ## 其它
--  感谢李恒道❤王一之, [askar882](https://greasyfork.org/zh-CN/users/291023-askar882), [SSmJaE](https://greasyfork.org/zh-CN/scripts/398601-welearn%E7%BD%91%E8%AF%BE%E5%8A%A9%E6%89%8B)
-- <strong>插件使用暂时无风险，</strong>但是并不排除以后可能出现的监测，<strong>请各位悉知</strong>脚本。
-- 本插件暂时需要配合谷歌插件使用，需悉知。
+- 感谢李恒道, 王一之, [DanDan](https://github.com/Dandanla), [askar882](https://greasyfork.org/zh-CN/users/291023-askar882)
+- <strong>插件使用暂时无风险，</strong>但是并不排除以后可能出现的监测，<strong>请各位悉知</strong>。
 - <strong>主观题和阅读题</strong>，即视频，语音，作文<strong>不回答</strong>。
 - 插件显示答案功能会采集部分<strong>非隐私</strong>数据上传，仅用于提高答案匹配度。
-- 插件更新时间不定，请参照说明书。
+- 本项目基于typescript + vue, 很欢迎感兴趣的同学一起来[开发](docs/DEVELOPMENT.md)
+
