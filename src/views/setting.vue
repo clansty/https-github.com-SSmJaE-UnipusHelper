@@ -58,7 +58,7 @@ import "reflect-metadata";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 import { Global, VERSION } from "../global";
-import { controlCenter, returnDefaultValues } from "../settings";
+import { controlCenter, returnDefaultValues } from "@utils/settings";
 import { Requests } from "@utils/requests";
 import { setValue } from "@utils/common";
 

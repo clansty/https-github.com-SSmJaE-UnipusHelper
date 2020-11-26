@@ -1,10 +1,13 @@
-import { DEBUG_MODE } from "./global";
 import swal from "sweetalert";
+
+import { DEBUG_MODE } from "./global";
 import { setValue, getValue } from "@utils/common";
 
 //用户协议
 (async () => {
     if (!DEBUG_MODE) {
+        //sweat alert 2 在u校园上会占用整个屏幕，找不到解决方案，故弃用，使用sweat alert 1
+
         // let status = eval(getValue("acceptAgreement", "false"));
 
         // if (!status) {

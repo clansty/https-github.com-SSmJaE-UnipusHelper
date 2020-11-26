@@ -1,11 +1,12 @@
 import { injectToContent } from "./common";
 
-type METHOD = "POST" | "DELETE" | "PUT" | "PATCH" | "GET" | "HEAD" | "OPTIONS";
+export type METHOD = "POST" | "DELETE" | "PUT" | "PATCH" | "GET" | "HEAD" | "OPTIONS";
 
-interface Init {
+export interface Init {
     method?: METHOD;
     headers?: object;
     body?: string | object;
+    /**注意query不能是嵌套对象，必须是扁平的 */
     query?: string | StringifiableRecord;
     [propName: string]: any;
 }
@@ -45,7 +46,7 @@ interface GM_xmlhttpResponse {
     responseText: string;
 }
 
-interface CustomResponse extends GM_xmlhttpResponse {
+export interface CustomResponse extends GM_xmlhttpResponse {
     json(): Promise<any>;
     text(): Promise<string>;
 }
@@ -65,7 +66,7 @@ if (typeof GM_xmlhttpRequest !== "function") {
 /**对GM_xmlhttpRequest的封装，以实现一致的fetch风格的request通用接口 */
 function requestOfGm(
     url: string,
-    init: Init = { method: "GET", headers: {}, body: "", query: "" },
+    init: Init = { method: "GET", headers: {}, body: undefined, query: undefined },
 ) {
     //可以直接传入object，而不用每次手动stringify
     let body = typeof init.body === "object" ? JSON.stringify(init.body) : init.body;
@@ -102,6 +103,11 @@ function requestOfGm(
 
 /**原生fetch并不支持query，所以还是要自己实现 */
 function generateFinalUrlWithQueryParams(url: string, query: StringifiableRecord) {
+    for (const [, value] of Object.entries(query || {})) {
+        if (typeof value === "object")
+            throw new Error("query params不应为嵌套对象，拍平或者手动序列化子对象");
+    }
+
     let absoluteUrl = url.startsWith("/") ? BASE_URL + url : url;
     return queryString.stringifyUrl({ url: absoluteUrl, query: query });
 }
@@ -109,7 +115,7 @@ function generateFinalUrlWithQueryParams(url: string, query: StringifiableRecord
 /**对crx sendMessage的封装，以实现一致的fetch风格的request通用接口 */
 async function requestOfCrx(
     url: string,
-    init: Init = { method: "GET", headers: {}, body: undefined, query: "" },
+    init: Init = { method: "GET", headers: {}, body: undefined, query: undefined },
 ): Promise<Response> {
     return new Promise<Response>(async (resolve, reject) => {
         const { body, query, ...realisticInit } = init;
@@ -133,12 +139,3 @@ async function requestOfCrx(
 }
 
 export default CRX ? requestOfCrx : requestOfGm;
-
-// ["delete", "get", "head", "options", "post", "put", "patch"].forEach((method) => {
-//     request.prototype[method] = (url: string, init: Init) => {
-//         init = { ...init, method: method.toUpperCase() as METHOD };
-//         return request(url, init);
-//     };
-// });
-
-// request.get();

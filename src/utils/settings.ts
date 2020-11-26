@@ -75,24 +75,21 @@ export function mergeSettings(controlCenter: SectionSetting[], pluginSettings: S
 
 //*-----------------------------------------------------------------------------------
 
-import { Global } from "./global";
-import Vue from "vue";
+import { Global, DEBUG_MODE } from "../global";
+import { getValue } from "@utils/common";
+
 /**
  * 通过集成了所有插件设置的设置中心，设置USER_SETTINGS的默认值
  */
 export function setDefaultValues(controlCenter: SectionSetting[]) {
     //todo 是都需要检查gm取出的值的合法性？
-    // const buffer = {} as any;
     for (const section of controlCenter) {
         for (const generic of section.settings) {
             if (Global.USER_SETTINGS[generic.id] == undefined) {
                 Global.USER_SETTINGS[generic.id] = generic.default;
-                // buffer[generic.id] = generic.default;
-                // Vue.set(Global.USER_SETTINGS, generic.id, generic.default);
             }
         }
     }
-    // Global.USER_SETTINGS = Object.assign({}, Global.USER_SETTINGS, { ...buffer });
 }
 
 export function returnDefaultValues() {
@@ -100,5 +97,30 @@ export function returnDefaultValues() {
         for (const generic of section.settings) {
             Global.USER_SETTINGS[generic.id] = generic.default;
         }
+    }
+}
+
+/**
+ * 应该最先读取油猴设置，完成USER_SETTINGS的初始化，有很多功能都是基于设置动态变化的
+ *
+ * 这样能保证执行各插件的initial时，USER_SETTINGS已经初始化完成，不会出现USER_SETTINGS为空的情况
+ *
+ * 实验表明，即使先初始化USER_SETTINGS, 仍旧先执行完毕plugin的initial，可以视为使用GM方法是异步执行的
+ *
+ * 所以此处执行完毕，USER_SETTINGS还是可能为空，需要手动在插件的initial中timeout
+ *
+ * 或者手动控制执行顺序以保证USER_SETTINGS不为空
+ */
+export async function initialUserSettings() {
+    //每次启动都会初始化USER_SETTINGS，所以需要先集成所有插件的设置，因为是根据插件的设置设定前者的默认值
+    const { pluginSettings } = await import("@plugins/index");
+    mergeSettings(controlCenter, pluginSettings);
+
+    //唯一false情况为gm下server模式调整ui
+    const flag = CRX ? true : DEBUG_MODE ? false : true;
+
+    if (flag) {
+        Global.USER_SETTINGS = await getValue("USER_SETTINGS", {});
+        setDefaultValues(controlCenter);
     }
 }

@@ -155,7 +155,7 @@ class Communication {
                         delete this.responses[sessionId];
                         resolve(response);
                     }
-                    await sleep(500);
+                    await sleep(50);
                     // console.error(this.sessions);
                     // console.error(this.responses);
                 }
