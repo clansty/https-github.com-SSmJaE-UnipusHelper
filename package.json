@@ -1,14 +1,14 @@
 {
   "name": "unipus_helper",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Unipus网课助手",
   "private": true,
   "scripts": {
     "watch": "webpack --watch --config webpack.dev.babel.js",
     "server": "webpack-dev-server --open --config webpack.dev.babel.js",
     "dev": "webpack --config webpack.dev.babel.js",
-    "build": "webpack --config webpack.prod.babel.js",
-    "crx": "webpack --config webpack.crx.babel.js"
+    "crx": "webpack --config webpack.crx.babel.js",
+    "gf": "webpack --config webpack.gf.babel.js"
   },
   "author": "SSmJaE",
   "license": "GPL-3.0",

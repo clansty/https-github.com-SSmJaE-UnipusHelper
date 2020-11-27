@@ -55,5 +55,6 @@ npm run build
 ## 打包生产bundle，用于chrome扩展
 ```
 npm run crx
+python zip.py
 ```
 

@@ -1,4 +1,5 @@
 import path from "path";
+import * as fs from "fs";
 
 import webpack from "webpack";
 import VueLoaderPlugin from "vue-loader/lib/plugin";
@@ -12,7 +13,7 @@ export default {
     output: {
         //__dirname即当前文件所在目录的路径，此处是根目录
         path: path.resolve(__dirname, "./dist"),
-        filename: `UnipusHelper${PACKAGE_JSON.version}.js`,
+        filename: `UnipusHelper${PACKAGE_JSON.version}.user.js`,
     },
     module: {
         rules: [
@@ -80,11 +81,11 @@ export default {
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1,
         }),
-        // new webpack.BannerPlugin({
-        //     banner: fs.readFileSync("./docs/headers.js", "utf8"),
-        //     raw: true,
-        //     entryOnly: true,
-        // }),
+        new webpack.BannerPlugin({
+            banner: fs.readFileSync("./headers.js", "utf8"),
+            raw: true,
+            entryOnly: true,
+        }),
     ],
     resolve: {
         //import的时候，可以不用写扩展名

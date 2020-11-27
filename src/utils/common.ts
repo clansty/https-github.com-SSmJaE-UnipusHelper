@@ -183,7 +183,12 @@ export async function getValue(key: string, defaultValue?: any) {
 
         console.error(returnValue);
     } else {
-        returnValue = JSON.parse(GM_getValue(key, defaultValue));
+        const temp = GM_getValue(key, defaultValue);
+        try {
+            returnValue = JSON.parse(temp);
+        } catch (error) {
+            returnValue = temp;
+        }
     }
     return returnValue;
 }

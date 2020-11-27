@@ -14,8 +14,8 @@ class RequestProxy extends Function {
         return self;
     }
 
-    __call__(url: string, init: Init = {}) {
-        return this.get(url, init);
+    __call__(url: string, init: Init = { method: "GET" }) {
+        return requestBase(url, init);
     }
 
     post(url: string, init: Init = {}) {

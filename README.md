@@ -24,9 +24,9 @@
 - 安装最新版本的Chrome
 - 油猴
   - 安装最新版本的Tamper Monkey
-  - 安装最新版本的本脚本(可以在Github右侧Release下载UnipusHelper[版本号].js文件，在油猴中新建脚本，并复制粘贴保存)
+  - 安装最新版本的本脚本(可以在Github右侧Release下载UnipusHelper[版本号].user.js文件，在油猴中新建脚本，并复制粘贴保存)
 - Chrome扩展
-  - 在Release中下载dist.zip压缩包，添加至chrome即可
+  - 在Release中下载UnipusHelper[版本号].crx.zip压缩包，添加至chrome即可
 
 ## 使用
 - 点击***左上角齿轮***进行功能设定

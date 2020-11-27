@@ -10,6 +10,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     ok: response.ok,
                 });
             } catch (error) {
+                console.error(error);
+
                 sendResponse({
                     text: undefined,
                     ok: false,

@@ -7,6 +7,7 @@ import TerserPlugin from "terser-webpack-plugin";
 export default merge(common, {
     mode: "production",
     optimization: {
+        minimize: false,
         minimizer: [
             new TerserPlugin({
                 cache: true,
