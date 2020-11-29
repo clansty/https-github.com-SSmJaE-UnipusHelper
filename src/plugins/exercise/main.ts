@@ -26,31 +26,34 @@ interface OpenIdStatus {
 }
 
 export async function handleQuestions(encryptedJson: FirstGrab) {
-    const openId = await Requests.getToken();
-
     let continueFlag = false;
-    let openIdStatus: OpenIdStatus = await getValue("openIdStatus", {});
-
-    if (openIdStatus[openId]) {
-        //如果已经认证通过
+    if (process.env.LITE) {
         continueFlag = true;
     } else {
-        const isExistUseReturnJson = await Requests.isExistUser();
-        if (isExistUseReturnJson.status) {
-            //认证成功
-            continueFlag = true;
+        const openId = await Requests.getToken();
+        let openIdStatus: OpenIdStatus = await getValue("openIdStatus", {});
 
-            openIdStatus[openId] = true;
-            setValue("openIdStatus", JSON.stringify(openIdStatus));
+        if (openIdStatus[openId]) {
+            //如果已经认证通过
+            continueFlag = true;
         } else {
-            //认证失败
-            Global.messages = [];
-            addMessage(`${isExistUseReturnJson.message}`, "info");
+            const isExistUseReturnJson = await Requests.isExistUser();
+            if (isExistUseReturnJson.status) {
+                //认证成功
+                continueFlag = true;
+
+                openIdStatus[openId] = true;
+                setValue("openIdStatus", openIdStatus);
+            } else {
+                //认证失败
+                Global.messages = [];
+                addMessage(`${isExistUseReturnJson.message}`, "info");
+            }
         }
     }
 
     if (continueFlag) {
-        let { questionType, answers } = parseAnswers(encryptedJson);
+        const { questionType, answers } = parseAnswers(encryptedJson);
 
         console.log(answers);
         outputAnswers(answers);

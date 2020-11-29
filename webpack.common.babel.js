@@ -81,11 +81,6 @@ export default {
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1,
         }),
-        new webpack.BannerPlugin({
-            banner: fs.readFileSync("./headers.js", "utf8"),
-            raw: true,
-            entryOnly: true,
-        }),
     ],
     resolve: {
         //import的时候，可以不用写扩展名

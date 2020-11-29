@@ -49,3 +49,11 @@
 - 自动zip crx生成文件
 ### 修复与改进
 - 修复版本查询异常
+## 2020-11-30 ```v1.3.2```
+### 新增
+- 提供LITE版本
+- 悬浮窗添加Github按钮
+### 修复与改进
+- 通过手动触发fetch，解决脚本初始化时，可能丢失请求的情况
+- 解决油猴版setValue重复JSON.stringify问题
+- 使用EnvironmentPlugin替代DefinePlugin

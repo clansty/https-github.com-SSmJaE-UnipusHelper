@@ -81,8 +81,9 @@ export default {
                 { from: "assets/icon.png", to: "" },
             ],
         }),
-        new webpack.DefinePlugin({
+        new webpack.EnvironmentPlugin({
             CRX: true,
+            LITE: false,
         }),
     ],
     resolve: {

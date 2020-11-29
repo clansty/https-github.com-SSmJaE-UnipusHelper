@@ -8,6 +8,10 @@
     <div id="container-control">
       <Button label="折叠" @click="collapsePanel()"></Button>
       <Button
+        label="Github"
+        onclick="window.open('https://github.com/SSmJaE/UnipusHelper','_blank')"
+      ></Button>
+      <Button
         label="使用说明"
         onclick="window.open('http://mz.3ds2.top','_blank')"
       ></Button>

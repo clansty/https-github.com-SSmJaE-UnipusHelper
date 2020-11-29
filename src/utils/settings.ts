@@ -117,7 +117,7 @@ export async function initialUserSettings() {
     mergeSettings(controlCenter, pluginSettings);
 
     //唯一false情况为gm下server模式调整ui
-    const flag = CRX ? true : DEBUG_MODE ? false : true;
+    const flag = process.env.CRX ? true : DEBUG_MODE ? false : true;
 
     if (flag) {
         Global.USER_SETTINGS = await getValue("USER_SETTINGS", {});

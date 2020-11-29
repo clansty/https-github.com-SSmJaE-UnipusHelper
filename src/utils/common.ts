@@ -1,7 +1,7 @@
 import { Global } from "../global";
 import Communication from "./bridge";
 
-export const injectToContent = CRX
+export const injectToContent = process.env.CRX
     ? new Communication("client", "inject", "content")
     : ({} as Communication);
 
@@ -156,7 +156,7 @@ export function requestErrorHandler(message: string = "请求异常，稍后再�
 export async function setValue(key: string, value: any) {
     typeof GM_setValue === "function" || function GM_setValue() {};
 
-    if (CRX) {
+    if (process.env.CRX) {
         await injectToContent.request({
             type: "setValue",
             key: key,
@@ -174,7 +174,7 @@ export async function getValue(key: string, defaultValue?: any) {
     typeof GM_getValue === "function" || function GM_getValue() {};
 
     let returnValue: any;
-    if (CRX) {
+    if (process.env.CRX) {
         returnValue = await injectToContent.request({
             type: "getValue",
             key: key,

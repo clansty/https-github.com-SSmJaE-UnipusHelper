@@ -16,7 +16,7 @@ export default merge(common, {
                 sourceMap: false,
                 terserOptions: {
                     output: {
-                        preamble: fs.readFileSync("./headers.js", "utf8"),
+                        preamble: fs.readFileSync("./docs/LITE/headers.js", "utf8"),
                         comments: false,
                     },
                 },
@@ -26,10 +26,10 @@ export default merge(common, {
     plugins: [
         new webpack.EnvironmentPlugin({
             CRX: false,
-            LITE: false,
+            LITE: true,
         }),
         new webpack.BannerPlugin({
-            banner: fs.readFileSync("./headers.js", "utf8"),
+            banner: fs.readFileSync("./docs/LITE/headers.js", "utf8"),
             raw: true,
             entryOnly: true,
         }),

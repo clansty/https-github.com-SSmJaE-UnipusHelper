@@ -7,7 +7,6 @@ declare global {
     // const GM_setClipboard: any;
     // const GM_xmlhttpRequest: any;
 
-    const Vue: typeof Vue;
     // const CryptoJS:typeof  CryptoJS
 
     // let PlaySound: Function;
@@ -20,6 +19,4 @@ declare global {
 
     const $: any; //todo types/jQuery
     const angular: any; //todo types/angular
-    /**是否为扩展模式 */
-    const CRX: boolean;
 }

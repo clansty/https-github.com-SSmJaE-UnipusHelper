@@ -138,4 +138,4 @@ async function requestOfCrx(
     });
 }
 
-export default CRX ? requestOfCrx : requestOfGm;
+export default process.env.CRX ? requestOfCrx : requestOfGm;
