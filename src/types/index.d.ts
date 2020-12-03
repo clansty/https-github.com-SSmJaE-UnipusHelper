@@ -1,10 +1,22 @@
-interface GenericSetting {
+interface GenericSettingOfSwitch {
     id: string;
     name: string;
-    type?: "readonly" | "switch";
-    default: number | string | boolean;
+    type: "switch";
+    default: boolean;
     description: string;
 }
+
+/**用于自动转换string至指定类型 */
+interface GenericSettingOfDefault {
+    id: string;
+    name: string;
+    type?: "readonly";
+    default: number | string;
+    valueType: "number" | "float" | "string";
+    description: string;
+}
+
+type GenericSetting = GenericSettingOfSwitch | GenericSettingOfDefault;
 
 interface SectionSetting {
     title: string;
@@ -30,6 +42,7 @@ interface UserSettings {
     switchInterval: number;
     switchLevel: number;
     range: boolean;
+    chapterAmount: number;
     rangeStart: number;
     rangeEnd: number;
 

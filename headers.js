@@ -2,7 +2,7 @@
 // @name         U校园网课助手【全网唯一免费/最全u校园题库】
 // @namespace    https://www.github.com/SSmJaE/
 // @description  显示U校园题目答案；自动答题；支持单元测试；刷时长；开放自定义设置
-// @version      1.3.2
+// @version      1.3.3
 // @author       rui & dan & SSmJaE
 // @license      GPL-3.0
 // @compatible   Chrome

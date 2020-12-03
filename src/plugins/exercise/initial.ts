@@ -24,7 +24,8 @@ window.fetch = (url, init = undefined) => {
 // 默认情况下，仅在第一次访问一个练习时会发送fetch请求，之后直接加载本地缓存
 // 在没有刷新页面的情况下，第二次访问该练习不会触发fetch，因此也就不会触发上方的hook
 // 所以需要手动触发fetch，以保证
-let lastUnit = "";
+// 同时也可以监听多页题，多页题的location.href会改变
+let lastUrl = "";
 
 setInterval(() => {
     try {
@@ -33,7 +34,7 @@ setInterval(() => {
 
         const courseInfo = /(course.*?)\//.exec(location.href)![1];
 
-        if (currentUnit && lastUnit !== currentUnit) {
+        if (currentUnit && lastUrl !== location.href) {
             const url = `https://ucontent.unipus.cn/course/api/v3/content/${courseInfo}/${currentUnit}/default/`;
             //必须是window.fetch，不然不是全局context
             window.fetch(url, {
@@ -46,7 +47,7 @@ setInterval(() => {
             });
         }
 
-        lastUnit = currentUnit;
+        lastUrl = location.href;
     } catch (error) {
         console.error("非作答页面");
     }

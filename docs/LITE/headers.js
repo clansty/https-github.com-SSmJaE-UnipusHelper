@@ -2,7 +2,7 @@
 // @name         Unipus网课助手(原U艹)
 // @namespace    https://www.github.com/SSmJaE/
 // @description  显示U校园题目答案；自动答题；不支持单元测试、班级测试；刷时长；开放自定义设置
-// @version      1.3.2
+// @version      1.3.3
 // @author       SSmJaE
 // @license      GPL-3.0
 // @compatible   Chrome

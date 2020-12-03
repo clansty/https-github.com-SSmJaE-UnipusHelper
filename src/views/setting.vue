@@ -34,7 +34,10 @@
                   class="input"
                   :value="Global.USER_SETTINGS[setting.id]"
                   @input="
-                    Global.USER_SETTINGS[setting.id] = $event.target.value
+                    Global.USER_SETTINGS[setting.id] = convertValueType(
+                      setting.id,
+                      $event.target.value
+                    )
                   "
                 />
               </template>
@@ -58,9 +61,14 @@ import "reflect-metadata";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 import { Global, VERSION } from "../global";
-import { controlCenter, returnDefaultValues } from "@utils/settings";
+import {
+  controlCenter,
+  returnDefaultValues,
+  SETTING_TYPES,
+} from "@utils/settings";
 import { Requests } from "@utils/requests";
 import { setValue } from "@utils/common";
+import { pluginSettings } from "@plugins/index";
 
 import Arrow from "./components/Arrow.vue";
 import Button from "./components/Button.vue";
@@ -78,11 +86,32 @@ import ToggleSlide from "./animations/ToggleSlide.vue";
 })
 export default class Setting extends Vue {
   Global = Global;
-  USER_SETTINGS = Global.USER_SETTINGS;
   sections = controlCenter;
 
   created() {
     Requests.checkVersion(VERSION);
+  }
+
+  /**自动转换input的值为对应类型
+   *
+   * 只可能是string或者number
+   */
+  convertValueType(settingId: string, newValue: string) {
+    let value: number | string;
+
+    switch (SETTING_TYPES[settingId]) {
+      case "number":
+        value = parseInt(newValue, 10);
+        break;
+      case "float":
+        value = parseFloat(newValue);
+        break;
+      default:
+        value = newValue;
+        break;
+    }
+
+    return value;
   }
 
   async saveChange() {

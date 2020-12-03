@@ -1,12 +1,14 @@
 import { Global } from "@src/global";
 
-let startUnit: HTMLElement;
-let startUnitIndex = (Global.USER_SETTINGS.rangeStart - 1) * 6;
-let endUnitIndex = Global.USER_SETTINGS.rangeEnd * 6 - 1;
+let startChapter: HTMLElement;
 
-function getStartUnit() {
+const startChapterIndex =
+    (Global.USER_SETTINGS.rangeStart - 1) * Global.USER_SETTINGS.chapterAmount;
+const endChapterIndex = Global.USER_SETTINGS.rangeEnd * Global.USER_SETTINGS.chapterAmount - 1;
+
+function getStartChapter() {
     for (let [index, unit] of document.querySelectorAll("#sidemenu li.group").entries()) {
-        if (index == startUnitIndex) startUnit = unit as HTMLElement;
+        if (index == startChapterIndex) startChapter = unit as HTMLElement;
     }
 }
 
@@ -24,18 +26,18 @@ function autoNext(selector: string, classFlag: string, switchLevel: number) {
             console.error("12321321", index, unit);
 
             if (Global.USER_SETTINGS.range)
-                if (switchLevel == 1) {
+                if (switchLevel === 1) {
                     //限定范围时，从指定开始范围刷
-                    if (index < startUnitIndex) {
+                    if (index < startChapterIndex) {
                         //跳转至开始单元
-                        startUnit.click();
+                        startChapter.click();
                         break;
                     }
 
                     //限定范围时，是否循环刷
-                    if (index >= endUnitIndex) {
+                    if (index >= endChapterIndex) {
                         if (Global.USER_SETTINGS.loop) {
-                            startUnit.click();
+                            startChapter.click();
                             break;
                         }
                     }
@@ -54,6 +56,8 @@ function generateInterval() {
 }
 
 export function recur() {
+    console.error(startChapterIndex, endChapterIndex, startChapter);
+
     setTimeout(() => {
         switch (Global.USER_SETTINGS.switchLevel) {
             //这里fall through是可以的，因为点击之后会切换页面，切换页面的话，相当于就break了
@@ -70,10 +74,16 @@ export function recur() {
 
             default:
                 if (Global.USER_SETTINGS.loop) {
-                    try {
-                        (document.querySelector("#sidemenu li.group") as HTMLElement).click();
-                    } catch (error) {
-                        // console.error(error);
+                    if (Global.USER_SETTINGS.range) {
+                        //循环刷，同时指定了范围
+                        startChapter.click();
+                    } else {
+                        //循环刷，但是未指定范围
+                        try {
+                            (document.querySelector("#sidemenu li.group") as HTMLElement).click();
+                        } catch (error) {
+                            // console.error(error);
+                        }
                     }
                 }
         }
@@ -84,7 +94,7 @@ export function recur() {
 
 export function handleAlert() {
     setTimeout(() => {
-        getStartUnit();
+        getStartChapter();
         try {
             document
                 .querySelector("div.dialog-header-pc--dialog-header-2qsXD")!

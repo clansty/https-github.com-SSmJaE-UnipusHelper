@@ -41,54 +41,74 @@ function decrypt(json: FirstGrab) {
 
 // QuestionKeys.bankedCloze
 
-const QUESTION_KEYS = [
-    "questions:shortanswer", //大填空（长篇
-    "shortanswer:shortanswer",
-    "questions:scoopquestions", //小填空
-    "questions:sequence", //排序
-    "questions:questions", //选择（多选、单选）、也可能是填空题目
-    "questions:scoopselection", //下拉
-    "questions:textmatch", //大意填空（长篇
-    "questions:bankedcloze", //单填空，视听说选填A-E
-];
-
+/**answerSheetType */
 const QUESTION_SELECTORS = [
     'input[name^="single-"]', //1单选
     'input[class^="MultipleChoice--checkbox-"]', //2多选
     'input[class^="fill-blank--bc-input"]', //3小填空
-    'textarea[class^="writing--textarea"]', //4大填空（式1）
+    'textarea[class^="writing--textarea"]', //4大填空
     'div[class^="cloze-text-pc--fill-blank"]', //5大意填空（text match）
     'input[class^="cloze-text-pc--bc-input"]', //6单填空
     'pre[class^="writing--pre"]',
 ];
 
+/**answerNetType */
+const QUESTION_KEYS = [
+    "questions:shortanswer", //1大填空（长篇
+    "shortanswer:shortanswer", //2
+    "questions:scoopquestions", //3小填空
+    "questions:sequence", //4排序
+    "questions:questions", //5选择（多选、单选）、也可能是填空题目
+    "questions:scoopselection", //6下拉
+    "questions:textmatch", //7大意填空（长篇
+    "questions:bankedcloze", //8单填空，视听说选填A-E
+];
+
+const CATEGORY = QUESTION_KEYS.map((category) => category.split(":")[1]);
 //content_1:scoopquestions "fillblankScoop"
 //content_2:scoopquestions "fillblankScoop"
 
+interface ExercisedAnswer {
+    questionType: string;
+    answers: string[];
+}
+
 export function parseAnswers(json: FirstGrab) {
-    let decryptedJson = decrypt(json);
-    const [key, questionBase] = Object.entries(decryptedJson)[0];
+    const decryptedJson = decrypt(json);
+    //多页题可能乱序
+    const orderedJson = Object.fromEntries(
+        Object.entries(decryptedJson).sort(([a], [b]) => (a > b ? 1 : b > a ? -1 : 0)),
+    );
+    console.log(orderedJson);
 
-    let answerNetType = 0, //json内定义的题目类型
-        answerSheetType = 0;
-    // key = Object.keys(json)[0],
-    // questionBase = json[key],
-    if (Object.entries(json).length > 1) {
-    } //todo多页
+    //适配多页题
+    let partIndex = 0;
+    try {
+        const tags = location.href.split("/");
+        const partInfo = tags[tags.length - 1]; //p_1?sequence
+        const partRegexResult = /p_(\d)/.exec(partInfo);
+        if (partRegexResult) partIndex = parseInt(partRegexResult[1], 10) - 1;
+    } catch (error) {}
+    console.log({ partIndex: partIndex });
 
-    //从接口获取到的题目类型
-    answerNetType = QUESTION_KEYS.indexOf(key) + 1; //从1开始计算
+    const [key, questionBase] = Object.entries(orderedJson)[partIndex];
+    /**从接口获取到的题目类型*/
+    let answerNetType = 0;
+    /**当前页面上的题目类型*/
+    let answerSheetType = 0;
+
+    //只匹配后半部分，因为多页题的前半部分会从questions变为contentX
+    answerNetType = CATEGORY.indexOf(key.split(":")[1]) + 1; //从1开始计算
     for (let [index, selector] of QUESTION_SELECTORS.entries()) {
         if (document.querySelectorAll(selector).length) {
             answerSheetType = index + 1;
-            //当前页面上的题目类型
-            break; //实际上的题目类型
+            break;
         }
     }
     console.log({ answerSheetType: answerSheetType, answerNetType: answerNetType });
 
     let questionType = "";
-    let answers: string[] | any = [];
+    let answers: string[] = [];
     switch (answerSheetType) {
         case 1:
             if (answerNetType === 5) {
@@ -105,9 +125,11 @@ export function parseAnswers(json: FirstGrab) {
                 //多选
                 questionType = "multiChoice";
                 for (const question of questionBase.questions) {
-                    //没有标答的情况
-                    if (!question.answers) answers = ["A"];
-                    else answers.push(question.answers);
+                    if (!question.answers.length) {
+                        answers.push((["A"] as unknown) as string); //没有标答的情况
+                    } else {
+                        answers.push(question.answers);
+                    }
                 }
             }
             break;
@@ -162,19 +184,21 @@ export function parseAnswers(json: FirstGrab) {
             switch (answerNetType) {
                 // case 2: //没遇到过
                 //     break;
-                case 4: //排序，忘了哪里的了answerSheetType为默认，这个自动不了
+                case 4: //排序
                     for (const question of questionBase.questions) {
                         answers.push(question.answer);
                     }
                     break;
 
-                case 6: //下拉，未遇到过
+                case 6: //下拉
                     questionType = "sequence";
                     for (const question of questionBase.questions) {
-                        answers.push(question.answers[0]);
+                        //可能没有标答，提供默认答案
+                        question.answers ? answers.push(question.answers[0]) : answers.push("A");
                     }
                     break;
             }
+            break;
     }
 
     return { questionType: questionType, answers: answers };

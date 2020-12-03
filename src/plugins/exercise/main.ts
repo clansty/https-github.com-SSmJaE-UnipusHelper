@@ -5,7 +5,6 @@ import { parseAnswers } from "./parser";
 import { solveQuestions } from "./solver";
 
 async function outputAnswers(answers: string[]) {
-    Global.messages = [];
     let index = 1;
     for (const answer of answers) {
         //因为答案的显示与答题被分离，所以要同步答案的输出和答题，还得另写一套，算了
@@ -55,6 +54,7 @@ export async function handleQuestions(encryptedJson: FirstGrab) {
     if (continueFlag) {
         const { questionType, answers } = parseAnswers(encryptedJson);
 
+        Global.messages = [];
         console.log(answers);
         outputAnswers(answers);
 

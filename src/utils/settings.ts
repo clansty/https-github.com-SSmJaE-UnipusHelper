@@ -8,6 +8,7 @@ export let controlCenter: SectionSetting[] = [
                 id: "userAccount",
                 name: "身份令牌",
                 default: "default",
+                valueType: "string",
                 description: "随意设定，累计每个人贡献的题目数量",
             },
             {
@@ -15,6 +16,7 @@ export let controlCenter: SectionSetting[] = [
                 name: "累计积分",
                 type: "readonly",
                 default: 0,
+                valueType: "number",
                 description: "上传答案获取，暂无用处",
             },
             // {
@@ -115,6 +117,7 @@ export async function initialUserSettings() {
     //每次启动都会初始化USER_SETTINGS，所以需要先集成所有插件的设置，因为是根据插件的设置设定前者的默认值
     const { pluginSettings } = await import("@plugins/index");
     mergeSettings(controlCenter, pluginSettings);
+    generateSettingType(controlCenter);
 
     //唯一false情况为gm下server模式调整ui
     const flag = process.env.CRX ? true : DEBUG_MODE ? false : true;
@@ -122,5 +125,23 @@ export async function initialUserSettings() {
     if (flag) {
         Global.USER_SETTINGS = await getValue("USER_SETTINGS", {});
         setDefaultValues(controlCenter);
+    }
+}
+
+export const SETTING_TYPES: {
+    [settingId: string]: "boolean" | "number" | "float" | "string";
+} = {};
+
+/**为自动转换input事件值的类型，而提取每个设置的类型 */
+function generateSettingType(controlCenter: SectionSetting[]) {
+    //在mergeSettings之后调用，此时的controlCenter已包含所有插件的设置
+    for (const section of controlCenter) {
+        for (const generic of section.settings) {
+            if (generic.type === "switch") {
+                SETTING_TYPES[generic.id] = "boolean";
+            } else {
+                SETTING_TYPES[generic.id] = generic.valueType;
+            }
+        }
     }
 }

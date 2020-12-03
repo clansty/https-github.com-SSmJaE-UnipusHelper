@@ -2,12 +2,13 @@
 # 本版本是Unipus网课助手的轻量版，仅支持普通练习和刷时长，不需要绑定token或者id，完整版在Github上，支持单元测试
 # 如果有可以做班级测试的账号，可以提供给作者，以开发班级测试相关功能，作者手头并没有账号
 
-<h1 align="center">U校园网课助手</h1>
+<h1 align="center">Unipus网课助手</h1>
 
-<p align="center">显示U校园题目答案；自动答题；不支持单元测试、单元测试；刷时长；开放自定义设置</p>
+<p align="center">显示U校园题目答案；自动答题；不支持单元测试、班级测试；刷时长；开放自定义设置</p>
 
 <p align="center">
 <a href="https://github.com/SSmJaE/UnipusHelper">Github</a> · 
+<a href="https://chrome.google.com/webstore/search/unipus%E7%BD%91%E8%AF%BE%E5%8A%A9%E6%89%8B">Chrome扩展</a> · 
 <a href="docs/DEVELOPMENT.md">参与开发</a> · 
 <a href="docs/CHANGELOG.md">更新日志</a> · 
 <a href="https://github.com/SSmJaE/UnipusHelper/issues">问题反馈</a>
@@ -26,8 +27,14 @@
 - 安装最新版本的Chrome
 - 油猴
   - 安装最新版本的Tamper Monkey
-  - 安装最新版本的本脚本(可以在Github右侧Release下载UnipusHelper[版本号].user.js文件，在油猴中新建脚本，并复制粘贴保存)
+  - 安装最新版本的完整版脚本(支持单元测试)
+    - 可以在Github右侧Release下载UnipusHelper[版本号].user.js文件
+    - 油猴理应自动弹出
+    - 如果油猴未弹出，在油猴中新建脚本，并复制粘贴保存
+  - 安装最新版本的轻量版脚本(无需绑定)(不支持单元测试)
+    - 通过[GreasyFork](https://greasyfork.org/zh-CN/scripts/405123)安装
 - Chrome扩展
+  - 直接在[Chrome网上应用店](https://chrome.google.com/webstore/search/unipus%E7%BD%91%E8%AF%BE%E5%8A%A9%E6%89%8B)安装
   - 在Release中下载UnipusHelper[版本号].crx.zip压缩包，添加至chrome即可
 
 ## 使用
@@ -35,7 +42,7 @@
 - 练习
   - 进入练习页面，如果是支持的课程，会自动显示答案
   - 自动答题
-    - 只支持<b>部分课程</b>的部分题目
+    - 只支持<b>部分课程</b>的部分题型
     - 默认关闭
 - 时长
   - 集成U校园时长专门(也可以说U校园时长专门是这一模块的独立版本)
@@ -57,9 +64,7 @@
   - 可以按Esc键强制退出跟随状态
 
 ## 其它
-- 感谢李恒道, 王一之, [DanDan](https://github.com/Dandanla), [askar882](https://greasyfork.org/zh-CN/users/291023-askar882)
-- <strong>插件使用暂时无风险，</strong>但是并不排除以后可能出现的监测，<strong>请各位悉知</strong>。
-- <strong>主观题和阅读题</strong>，即视频，语音，作文<strong>不回答</strong>。
-- 插件显示答案功能会采集部分<strong>非隐私</strong>数据上传，仅用于提高答案匹配度。
-- 本项目基于typescript + vue, 很欢迎感兴趣的同学一起来[开发](docs/DEVELOPMENT.md)
+- 用爱发电，佛系更新
+- 感谢李恒道, 王一之, [DanDan](https://github.com/Dandanla), [askar882](https://greasyfork.org/zh-CN/users/291023-askar882), U++原作者
+- 本项目基于Typescript + Vue, 很欢迎感兴趣的同学一起来[开发](docs/DEVELOPMENT.md)
 

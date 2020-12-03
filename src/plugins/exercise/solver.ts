@@ -45,10 +45,10 @@ function handleInput(element: Element, answerText: string) {
 }
 
 export async function solveQuestions(questionType: string, answers: string[]) {
-    let inputOnPaper = document.querySelectorAll('input[class^="fill-blank--bc-input"]');
-    let inputOnPaper3 = document.querySelectorAll('input[class^="cloze-text-pc--bc-input"]');
-    let textareaOnPaper = document.querySelectorAll('textarea[class^="writing--textarea"]');
-    let textareaOnPaper2 = document.querySelectorAll('div[class^="cloze-text-pc--fill-blank"]');
+    const inputOnPaper = document.querySelectorAll('input[class^="fill-blank--bc-input"]');
+    const inputOnPaper3 = document.querySelectorAll('input[class^="cloze-text-pc--bc-input"]');
+    const textareaOnPaper = document.querySelectorAll('textarea[class^="writing--textarea"]');
+    const textareaOnPaper2 = document.querySelectorAll('div[class^="cloze-text-pc--fill-blank"]');
 
     for (const [questionIndex, answerText] of answers.entries()) {
         await sleep(generateRandomInterval());
