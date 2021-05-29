@@ -46,7 +46,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { Global } from "../global";
 import { copyToClipboard } from "@utils/common";
 
-import Button from "./components/Button.vue";
+import Button from "./components/button.vue";
 
 @Component({
   components: {

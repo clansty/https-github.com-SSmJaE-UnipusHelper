@@ -71,8 +71,8 @@ import { setValue } from "@utils/common";
 import { pluginSettings } from "@plugins/index";
 
 import Arrow from "./components/Arrow.vue";
-import Button from "./components/Button.vue";
-import MySwitch from "./components/Switch.vue";
+import Button from "./components/button.vue";
+import MySwitch from "./components/switch.vue";
 
 import ToggleSlide from "./animations/ToggleSlide.vue";
 

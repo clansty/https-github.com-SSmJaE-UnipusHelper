@@ -7,8 +7,8 @@ Vue.directive("ripple", Ripple);
 import { Global } from "@src/global";
 import { makeDraggable } from "@utils/common";
 
-import Panel from "@src/views/Panel.vue";
-import Setting from "@src/views/Setting.vue";
+import Panel from "@src/views/panel.vue";
+import Setting from "@src/views/setting.vue";
 
 // if (
 //     location.href.includes("centercourseware.sflep.com") || //练习答题页面
